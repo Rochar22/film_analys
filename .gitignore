@@ -1,0 +1,7 @@
+.idea
+.venv
+__pycache__
+title.basics.tsv
+title.ratings.tsv
+title.ratings.tsv.gz
+title.basics.tsv.gz
