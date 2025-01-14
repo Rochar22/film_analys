@@ -14,7 +14,7 @@ def save_data_to_file(data, file_path):
     """
     Сохраняет DataFrame обратно в файл .tsv.
     """
-    data.to_csv(file_path, sep="\t", index=False)
+    data.to_csv(file_path)
     print(f"Данные сохранены в файл: {file_path}")
 
 
