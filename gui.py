@@ -59,8 +59,8 @@ def film(button_rait,button_check, movie_title):
     response = requests.get(url)
     data = response.json()
 
-    basics = pd.read_csv("title.basics.tsv")
-    ratings = pd.read_csv("title.ratings.tsv")
+    basics = pd.read_csv("title.basics.tsv", sep="\t")
+    ratings = pd.read_csv("title.ratings.tsv", sep="\t")
 
 
     movie_data = {"startYear": data["Released"],

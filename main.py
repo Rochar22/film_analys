@@ -14,7 +14,7 @@ def save_data_to_file(data, file_path):
     """
     Сохраняет DataFrame обратно в файл .tsv.
     """
-    data.to_csv(file_path, index=False)
+    data.to_csv(file_path)
     print(f"Данные сохранены в файл: {file_path}")
 
 
@@ -30,8 +30,8 @@ def load_and_process_imdb_data(new_rating, movie_title):
 
 
 
-    basics = pd.read_csv("title.basics.tsv", dtype=str)
-    ratings = pd.read_csv("title.ratings.tsv", dtype=str)
+    basics = pd.read_csv("title.basics.tsv", dtype=str, sep="\t")
+    ratings = pd.read_csv("title.ratings.tsv", dtype=str, sep="\t")
 
     update_movie_rating(basics,ratings,new_rating, movie_title)
     basics.to_csv('./title.basics.tsv')
