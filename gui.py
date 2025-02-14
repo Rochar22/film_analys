@@ -9,6 +9,27 @@ import pandas as pd
 import gzip
 import shutil
 import os
+import time
+
+def delete_text(text_id):
+    canvas.delete(text_id)
+
+def swap_rating(new_rating, Title, text):
+    url = f"http://www.omdbapi.com/?t={Title}&apikey=9c4e7486"
+    response = requests.get(url)
+    data = response.json()
+    try:
+        movie_data = {
+        "filmname": data["Title"],
+        }
+    except:
+        canvas.itemconfig(text, text=f'Фильма {Title} не существует', fill='#FF2400')
+        return 0
+    create_and_train_model(new_rating, movie_data["filmname"])
+    canvas.itemconfig(text, text=f'Оценка {movie_data["filmname"]} изменена на {new_rating}', fill='#00ff2a')
+
+
+    
 
 
 
@@ -298,6 +319,14 @@ def add_rating(add_rating_button,checker_button,*args):
         height=65.0
     )
 
+    congratulations = canvas.create_text(
+    200.0,
+    300.0,
+    anchor="nw",
+    text=".",
+    fill="#00ff2a",
+    font=("Inter", 32 * -1),
+)
     film_image = PhotoImage(
         file=relative_to_assets("entry_2.png", ASSETS_PATH1))
     entry_bg_2 = canvas.create_image(
@@ -327,25 +356,25 @@ def add_rating(add_rating_button,checker_button,*args):
         image=button_image_3,
         borderwidth=0,
         highlightthickness=0,
-        command=lambda: create_and_train_model(new_rating_entry.get(), film_entry.get()),
+        command=lambda: swap_rating(new_rating_entry.get(), film_entry.get(), congratulations),
         relief="flat"
     )
-
     button_add.place(
         x=800.0,
         y=223.0,
         width=60,
         height=60
     )
-    checker_button.config(state='normal', command=lambda: checker_film(film=film,new_rating=new_rating,film_entry=film_entry,new_rating_entry=new_rating_entry,button_add=button_add,new_rating_entry_image=entry_bg_1,film_entry_image=entry_bg_2))
+    checker_button.config(state='normal', command=lambda: checker_film(film=film,new_rating=new_rating,film_entry=film_entry,new_rating_entry=new_rating_entry,button_add=button_add, congratulations=congratulations,new_rating_entry_image=entry_bg_1,film_entry_image=entry_bg_2))
     window.mainloop()
 
 
-def checker_film(film=None, new_rating=None, film_entry=None, new_rating_entry=None, button_add=None,new_rating_entry_image=None, film_entry_image=None ):
+def checker_film(film=None, new_rating=None, film_entry=None, new_rating_entry=None, button_add=None,new_rating_entry_image=None, film_entry_image=None, congratulations=None ):
     canvas.delete(film)
     canvas.delete(new_rating)
     canvas.delete(new_rating_entry_image)
     canvas.delete(film_entry_image)
+    canvas.delete(congratulations)
     try:
         film_entry.grid()
         film_entry.destroy()
